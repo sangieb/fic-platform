@@ -17,13 +17,34 @@
   </a>
   <div class="fic-navbar__actions">
 
-    <!-- Idiomas -->
-    <a href="?lang=es&nombre={{ nombre }}"
-       class="btn-lang {% if lang == 'es' %}active{% endif %}">🇨🇴 ES</a>
-    <a href="?lang=en&nombre={{ nombre }}"
-       class="btn-lang {% if lang == 'en' %}active{% endif %}">🇺🇸 EN</a>
-    <a href="?lang=fr&nombre={{ nombre }}"
-       class="btn-lang {% if lang == 'fr' %}active{% endif %}">🇫🇷 FR</a>
+    <!-- Selector de idioma -->
+    <div class="fic-lang-selector">
+    <button class="fic-lang-selector__btn" onclick="toggleLangMenu()" id="langBtn">
+        {% if lang == 'es' %}
+        <img src="https://flagcdn.com/w20/co.png" alt="Colombia"> Español
+        {% elif lang == 'en' %}
+        <img src="https://flagcdn.com/w20/us.png" alt="English"> English
+        {% elif lang == 'fr' %}
+        <img src="https://flagcdn.com/w20/fr.png" alt="Français"> Français
+        {% endif %}
+        <span class="fic-lang-selector__arrow">▾</span>
+    </button>
+
+    <div class="fic-lang-selector__menu" id="langMenu">
+        <a href="?lang=es&nombre={{ nombre }}"
+        class="fic-lang-selector__item {% if lang == 'es' %}active{% endif %}">
+        <img src="https://flagcdn.com/w20/co.png" alt="CO"> Español
+        </a>
+        <a href="?lang=en&nombre={{ nombre }}"
+        class="fic-lang-selector__item {% if lang == 'en' %}active{% endif %}">
+        <img src="https://flagcdn.com/w20/us.png" alt="US"> English
+        </a>
+        <a href="?lang=fr&nombre={{ nombre }}"
+        class="fic-lang-selector__item {% if lang == 'fr' %}active{% endif %}">
+        <img src="https://flagcdn.com/w20/fr.png" alt="FR"> Français
+        </a>
+    </div>
+    </div>
 
     <!-- Exportar -->
     <a href="http://localhost:8080/api/reportes/pdf"

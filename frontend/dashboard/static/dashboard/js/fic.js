@@ -69,3 +69,23 @@ function inicializarTabla() {
         }
     });
 }
+
+/* ── Selector de idioma ── */
+function toggleLangMenu() {
+    const menu  = document.getElementById('langMenu');
+    const arrow = document.querySelector('.fic-lang-selector__arrow');
+
+    menu.classList.toggle('open');
+    arrow.classList.toggle('open');
+}
+
+// Cierra el menú si se hace clic fuera
+document.addEventListener('click', function(e) {
+    const selector = document.querySelector('.fic-lang-selector');
+    if (selector && !selector.contains(e.target)) {
+        document.getElementById('langMenu')
+            .classList.remove('open');
+        document.querySelector('.fic-lang-selector__arrow')
+            .classList.remove('open');
+    }
+});

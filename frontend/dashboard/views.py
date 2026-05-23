@@ -26,6 +26,11 @@ TRADUCCIONES = {
         'nav_exportar_pdf':             'Exportar PDF',
         'nav_exportar_excel':           'Exportar Excel',
         'page_title':                   'FIC Colombia — Fondos de Inversión',
+        'kpi_total_fondos':             'Total Fondos',
+        'kpi_mejor_rent':               'Mejor Rentabilidad Anual',
+        'kpi_promedio':                 'Rentabilidad Promedio',
+        'kpi_inversionistas':           'Total Inversionistas',
+        'kpi_mejor_fondo':              'Mejor Fondo',
     },
     'en': {
         'dashboard_titulo':             'Collective Investment Funds of Colombia',
@@ -50,6 +55,11 @@ TRADUCCIONES = {
         'nav_exportar_pdf':             'Export PDF',
         'nav_exportar_excel':           'Export Excel',
         'page_title':                   'FIC Colombia — Investment Funds',
+        'kpi_total_fondos':             'Total Funds',
+        'kpi_mejor_rent':               'Best Annual Yield',
+        'kpi_promedio':                 'Average Yield',
+        'kpi_inversionistas':           'Total Investors',
+        'kpi_mejor_fondo':              'Best Fund',
     },
     'fr': {
         'dashboard_titulo':             "Fonds d'Investissement Collectif de Colombie",
@@ -74,8 +84,17 @@ TRADUCCIONES = {
         'nav_exportar_pdf':             'Exporter PDF',
         'nav_exportar_excel':           'Exporter Excel',
         'page_title':                   "FIC Colombie — Fonds d'Investissement",
+        'kpi_total_fondos':             'Total Fonds',
+        'kpi_mejor_rent':               'Meilleure Rentabilité Annuelle',
+        'kpi_promedio':                 'Rentabilité Moyenne',
+        'kpi_inversionistas':           'Total Investisseurs',
+        'kpi_mejor_fondo':              'Meilleur Fonds',
     },
 }
+
+def get_texto(lang, clave):
+    idioma = TRADUCCIONES.get(lang, TRADUCCIONES['es'])
+    return idioma.get(clave, TRADUCCIONES['es'].get(clave, clave))
 
 def index(request):
     page   = int(request.GET.get('page', 0))
@@ -89,6 +108,7 @@ def index(request):
     if nombre:
         params['nombre'] = nombre
 
+    # Fondos
     try:
         resp = requests.get(
             f"{settings.BACKEND_URL}/api/fic",
@@ -100,10 +120,27 @@ def index(request):
         total_pages = data.get('totalPages', 0)
         total_items = data.get('totalElements', 0)
     except Exception as e:
-        print(f"Error conectando al backend: {e}")
+        print(f"Error fondos: {e}")
         fondos      = []
         total_pages = 0
         total_items = 0
+
+    # Estadísticas KPI
+    try:
+        resp_stats = requests.get(
+            f"{settings.BACKEND_URL}/api/fic/estadisticas",
+            timeout=10
+        )
+        stats = resp_stats.json()
+    except Exception as e:
+        print(f"Error stats: {e}")
+        stats = {
+            'totalFondos': 0,
+            'mejorRentabilidad': 0,
+            'promedioRentabilidad': 0,
+            'totalInversionistas': 0,
+            'nombreMejorFondo': '-'
+        }
 
     t = TRADUCCIONES.get(lang, TRADUCCIONES['es'])
 
@@ -115,4 +152,5 @@ def index(request):
         'nombre':       nombre,
         'lang':         lang,
         't':            t,
+        'stats':        stats,
     })

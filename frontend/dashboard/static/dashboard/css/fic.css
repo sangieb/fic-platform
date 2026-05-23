@@ -356,3 +356,179 @@ body {
         padding: 0.5rem 0.6rem;
     }
 }
+
+/* ── Tarjetas KPI ── */
+.fic-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.fic-kpi-card {
+    border-radius: var(--radius);
+    padding: 1.25rem 1.5rem;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    box-shadow: var(--shadow-md);
+    transition: transform 0.2s ease;
+}
+
+.fic-kpi-card:hover {
+    transform: translateY(-3px);
+}
+
+.fic-kpi-card--blue {
+    background: linear-gradient(135deg, #1d4ed8, #3b82f6);
+}
+
+.fic-kpi-card--green {
+    background: linear-gradient(135deg, #065f46, #10b981);
+}
+
+.fic-kpi-card--purple {
+    background: linear-gradient(135deg, #5b21b6, #8b5cf6);
+}
+
+.fic-kpi-card--orange {
+    background: linear-gradient(135deg, #92400e, #f59e0b);
+}
+
+.fic-kpi-card__icon {
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+}
+
+.fic-kpi-card__valor {
+    font-size: 1.9rem;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.fic-kpi-card__label {
+    font-size: 0.8rem;
+    opacity: 0.9;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.fic-kpi-card__sub {
+    font-size: 0.75rem;
+    opacity: 0.8;
+    margin-top: 0.25rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Responsive KPI */
+@media (max-width: 768px) {
+    .fic-kpi-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .fic-kpi-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ── Selector de idioma desplegable ── */
+.fic-lang-selector {
+    position: relative;
+}
+
+.fic-lang-selector__btn {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 0.9rem;
+    border-radius: 8px;
+    border: 1.5px solid rgba(255,255,255,0.4);
+    background: rgba(255,255,255,0.08);
+    color: #ffffff;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    .fic-lang-selector__btn img,
+    .fic-lang-selector__item img {
+    width: 20px;
+    height: 14px;
+    object-fit: cover;
+    border-radius: 2px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+}
+
+.fic-lang-selector__btn:hover {
+    background: rgba(255,255,255,0.18);
+    border-color: rgba(255,255,255,0.7);
+}
+
+.fic-lang-selector__arrow {
+    font-size: 0.7rem;
+    transition: transform 0.2s ease;
+}
+
+.fic-lang-selector__arrow.open {
+    transform: rotate(180deg);
+}
+
+.fic-lang-selector__menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+    overflow: hidden;
+    min-width: 160px;
+    z-index: 1000;
+    border: 1px solid var(--color-border);
+}
+
+.fic-lang-selector__menu.open {
+    display: block;
+    animation: fadeDown 0.15s ease;
+}
+
+@keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.fic-lang-selector__item {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.7rem 1rem;
+    color: var(--color-dark);
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: background 0.15s;
+}
+
+.fic-lang-selector__item:hover {
+    background: #f0f4ff;
+}
+
+.fic-lang-selector__item.active {
+    background: #eef2ff;
+    color: var(--color-primary);
+    font-weight: 700;
+}
+
+.fic-lang-selector__item.active::after {
+    content: '✓';
+    margin-left: auto;
+    color: var(--color-primary);
+    font-size: 0.8rem;
+}

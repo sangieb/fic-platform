@@ -10,6 +10,36 @@
   <p class="fic-header__subtitle">{{ total_items }} {{ t.fondos_disponibles }}</p>
 </div>
 
+<!-- TARJETAS KPI -->
+<div class="fic-kpi-grid">
+
+  <div class="fic-kpi-card fic-kpi-card--blue">
+    <div class="fic-kpi-card__icon">📊</div>
+    <div class="fic-kpi-card__valor">{{ stats.totalFondos }}</div>
+    <div class="fic-kpi-card__label">{{ t.kpi_total_fondos }}</div>
+  </div>
+
+  <div class="fic-kpi-card fic-kpi-card--green">
+    <div class="fic-kpi-card__icon">🏆</div>
+    <div class="fic-kpi-card__valor">{{ stats.mejorRentabilidad }}%</div>
+    <div class="fic-kpi-card__label">{{ t.kpi_mejor_rent }}</div>
+    <div class="fic-kpi-card__sub">{{ stats.nombreMejorFondo|truncatechars:30 }}</div>
+  </div>
+
+  <div class="fic-kpi-card fic-kpi-card--purple">
+    <div class="fic-kpi-card__icon">📈</div>
+    <div class="fic-kpi-card__valor">{{ stats.promedioRentabilidad }}%</div>
+    <div class="fic-kpi-card__label">{{ t.kpi_promedio }}</div>
+  </div>
+
+  <div class="fic-kpi-card fic-kpi-card--orange">
+    <div class="fic-kpi-card__icon">👥</div>
+    <div class="fic-kpi-card__valor">{{ stats.totalInversionistas }}</div>
+    <div class="fic-kpi-card__label">{{ t.kpi_inversionistas }}</div>
+  </div>
+
+</div>
+
 <form method="get" class="fic-search">
   <input type="hidden" name="lang" value="{{ lang }}">
   <input type="text" name="nombre" value="{{ nombre }}"
