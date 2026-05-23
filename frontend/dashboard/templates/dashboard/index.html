@@ -40,11 +40,15 @@
 
 </div>
 
-<form method="get" class="fic-search">
+<form method="get" class="fic-search" id="formBusqueda">
   <input type="hidden" name="lang" value="{{ lang }}">
-  <input type="text" name="nombre" value="{{ nombre }}"
+  <input type="text"
+         name="nombre"
+         id="inputBusqueda"
+         value="{{ nombre }}"
          class="fic-search__input"
-         placeholder="{{ t.dashboard_buscador }}">
+         placeholder="{{ t.dashboard_buscador }}"
+         autocomplete="off">
   <button type="submit" class="fic-search__btn fic-search__btn--primary">
     🔍 {{ t.dashboard_boton_buscar }}
   </button>
@@ -52,6 +56,9 @@
     ✕ {{ t.dashboard_boton_limpiar }}
   </a>
 </form>
+
+<!-- Contador de resultados en tiempo real -->
+<div id="contadorResultados" class="fic-search-contador"></div>
 
 {% if fondos %}
 <div class="fic-card">

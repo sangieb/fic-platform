@@ -5,6 +5,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     inicializarGrafica();
     inicializarTabla();
+    inicializarBusquedaTiempoReal();
 });
 
 /* ── Gráfica de rentabilidades ── */
@@ -89,3 +90,105 @@ document.addEventListener('click', function(e) {
             .classList.remove('open');
     }
 });
+
+/* ── Búsqueda en tiempo real ── */
+function inicializarBusquedaTiempoReal() {
+    const input    = document.getElementById('inputBusqueda');
+    const contador = document.getElementById('contadorResultados');
+
+    if (!input) return;
+
+    let timeoutId;
+
+    input.addEventListener('input', function () {
+        clearTimeout(timeoutId);
+
+        // Pequeño delay para no filtrar en cada tecla
+        timeoutId = setTimeout(() => {
+            filtrarTabla(input.value.trim(), contador);
+        }, 200);
+    });
+
+    // Ejecuta al cargar si ya hay texto
+    if (input.value.trim()) {
+        filtrarTabla(input.value.trim(), contador);
+    }
+}
+
+function filtrarTabla(termino, contador) {
+    const filas      = document.querySelectorAll('.fic-table tbody tr');
+    const terminoMin = termino.toLowerCase();
+    let   visibles   = 0;
+
+    filas.forEach(fila => {
+        // Busca en nombre del fondo y gestora
+        const nombre  = fila.cells[0]
+            ? fila.cells[0].textContent.toLowerCase() : '';
+        const gestora = fila.cells[1]
+            ? fila.cells[1].textContent.toLowerCase() : '';
+
+        const coincide = terminoMin === ''
+            || nombre.includes(terminoMin)
+            || gestora.includes(terminoMin);
+
+        if (coincide) {
+            fila.classList.remove('oculto');
+            visibles++;
+
+            // Resalta el texto encontrado
+            if (terminoMin !== '') {
+                resaltarTexto(fila.cells[0], termino);
+                resaltarTexto(fila.cells[1], termino);
+            } else {
+                limpiarResaltado(fila.cells[0]);
+                limpiarResaltado(fila.cells[1]);
+            }
+        } else {
+            fila.classList.add('oculto');
+            limpiarResaltado(fila.cells[0]);
+            limpiarResaltado(fila.cells[1]);
+        }
+    });
+
+    // Actualiza el contador
+    if (contador) {
+        if (terminoMin === '') {
+            contador.innerHTML = '';
+        } else {
+            contador.innerHTML = `
+                Mostrando <strong>${visibles}</strong>
+                de <strong>${filas.length}</strong> fondos
+                para "<strong>${termino}</strong>"
+            `;
+        }
+    }
+}
+
+function resaltarTexto(celda, termino) {
+    if (!celda) return;
+
+    // Limpia resaltado previo
+    limpiarResaltado(celda);
+
+    const texto = celda.textContent;
+    const regex = new RegExp(`(${escapeRegex(termino)})`, 'gi');
+
+    if (regex.test(texto)) {
+        celda.innerHTML = texto.replace(
+            new RegExp(`(${escapeRegex(termino)})`, 'gi'),
+            '<span class="fic-highlight">$1</span>'
+        );
+    }
+}
+
+function limpiarResaltado(celda) {
+    if (!celda) return;
+    const spans = celda.querySelectorAll('.fic-highlight');
+    spans.forEach(span => {
+        span.replaceWith(span.textContent);
+    });
+}
+
+function escapeRegex(texto) {
+    return texto.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}

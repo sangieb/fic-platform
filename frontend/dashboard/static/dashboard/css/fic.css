@@ -532,3 +532,29 @@ body {
     color: var(--color-primary);
     font-size: 0.8rem;
 }
+
+/* ── Búsqueda en tiempo real ── */
+.fic-search-contador {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    margin-bottom: 0.75rem;
+    min-height: 1.2rem;
+    transition: all 0.2s;
+}
+
+.fic-search-contador strong {
+    color: var(--color-primary);
+}
+
+/* Fila oculta por filtro */
+.fic-table tbody tr.oculto {
+    display: none;
+}
+
+/* Resaltado de texto encontrado */
+.fic-highlight {
+    background: #fef08a;
+    border-radius: 2px;
+    padding: 0 2px;
+    font-weight: 600;
+}
