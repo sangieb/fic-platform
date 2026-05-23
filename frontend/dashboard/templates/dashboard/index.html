@@ -13,26 +13,34 @@
 <!-- TARJETAS KPI -->
 <div class="fic-kpi-grid">
 
-  <div class="fic-kpi-card fic-kpi-card--blue">
+  <div class="fic-kpi-card fic-kpi-card--blue"
+       onclick="abrirPanel('fondos')"
+       style="cursor:pointer">
     <div class="fic-kpi-card__icon">📊</div>
     <div class="fic-kpi-card__valor">{{ stats.totalFondos }}</div>
     <div class="fic-kpi-card__label">{{ t.kpi_total_fondos }}</div>
   </div>
 
-  <div class="fic-kpi-card fic-kpi-card--green">
+  <div class="fic-kpi-card fic-kpi-card--green"
+       onclick="abrirPanel('mejor')"
+       style="cursor:pointer">
     <div class="fic-kpi-card__icon">🏆</div>
     <div class="fic-kpi-card__valor">{{ stats.mejorRentabilidad }}%</div>
     <div class="fic-kpi-card__label">{{ t.kpi_mejor_rent }}</div>
     <div class="fic-kpi-card__sub">{{ stats.nombreMejorFondo|truncatechars:30 }}</div>
   </div>
 
-  <div class="fic-kpi-card fic-kpi-card--purple">
+  <div class="fic-kpi-card fic-kpi-card--purple"
+       onclick="abrirPanel('promedio')"
+       style="cursor:pointer">
     <div class="fic-kpi-card__icon">📈</div>
     <div class="fic-kpi-card__valor">{{ stats.promedioRentabilidad }}%</div>
     <div class="fic-kpi-card__label">{{ t.kpi_promedio }}</div>
   </div>
 
-  <div class="fic-kpi-card fic-kpi-card--orange">
+  <div class="fic-kpi-card fic-kpi-card--orange"
+       onclick="abrirPanel('inversionistas')"
+       style="cursor:pointer">
     <div class="fic-kpi-card__icon">👥</div>
     <div class="fic-kpi-card__valor">{{ stats.totalInversionistas }}</div>
     <div class="fic-kpi-card__label">{{ t.kpi_inversionistas }}</div>
@@ -40,6 +48,7 @@
 
 </div>
 
+<!-- BUSCADOR -->
 <form method="get" class="fic-search" id="formBusqueda">
   <input type="hidden" name="lang" value="{{ lang }}">
   <input type="text"
@@ -56,25 +65,25 @@
     ✕ {{ t.dashboard_boton_limpiar }}
   </a>
 </form>
-
-<!-- Contador de resultados en tiempo real -->
 <div id="contadorResultados" class="fic-search-contador"></div>
 
+<!-- GRÁFICA -->
 {% if fondos %}
 <div class="fic-card">
   <div class="fic-card__header">📈 {{ t.grafica_titulo }}</div>
   <div class="fic-card__body">
     <div class="fic-chart-container">
-        <canvas id="graficaFic"
+      <canvas id="graficaFic"
         data-labels='[{% for f in fondos|slice:":10" %}{% if not forloop.last %}"{{ f.nombreFondo|default:"Fondo"|truncatechars:22|escapejs }}",{% else %}"{{ f.nombreFondo|default:"Fondo"|truncatechars:22|escapejs }}"{% endif %}{% endfor %}]'
         data-valores='[{% for f in fondos|slice:":10" %}{% if not forloop.last %}{{ f.rentabilidad|default:0 }},{% else %}{{ f.rentabilidad|default:0 }}{% endif %}{% endfor %}]'
         data-label="{{ t.tabla_columna_anual }} (%)">
-        </canvas>
+      </canvas>
     </div>
   </div>
 </div>
 {% endif %}
 
+<!-- TABLA -->
 <div class="fic-card">
   <div class="fic-card__header">
     📋 {{ t.tabla_titulo }}
@@ -141,6 +150,7 @@
   </div>
 </div>
 
+<!-- PAGINACIÓN -->
 {% if total_pages > 1 %}
 <div class="fic-pagination">
   {% if current_page > 0 %}
@@ -157,4 +167,28 @@
 </div>
 {% endif %}
 
+<!-- PANEL LATERAL DE DETALLE -->
+<div id="kpiPanel" class="fic-kpi-panel">
+  <div class="fic-kpi-panel__overlay" onclick="cerrarPanel()"></div>
+  <div class="fic-kpi-panel__content">
+    <div class="fic-kpi-panel__header">
+      <h2 id="panelTitulo" class="fic-kpi-panel__titulo"></h2>
+      <button class="fic-kpi-panel__cerrar" onclick="cerrarPanel()">✕</button>
+    </div>
+    <div id="panelCuerpo" class="fic-kpi-panel__cuerpo"></div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  const FIC_STATS = {
+    totalFondos:          {{ stats.totalFondos }},
+    mejorRentabilidad:    {{ stats.mejorRentabilidad }},
+    nombreMejorFondo:     "{{ stats.nombreMejorFondo|escapejs }}",
+    promedioRentabilidad: {{ stats.promedioRentabilidad }},
+    totalInversionistas:  {{ stats.totalInversionistas }},
+  };
+</script>
 {% endblock %}

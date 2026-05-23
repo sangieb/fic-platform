@@ -192,3 +192,176 @@ function limpiarResaltado(celda) {
 function escapeRegex(texto) {
     return texto.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
+
+/* ── Panel lateral KPI ── */
+function abrirPanel(tipo) {
+    const panel  = document.getElementById('kpiPanel');
+    const titulo = document.getElementById('panelTitulo');
+    const cuerpo = document.getElementById('panelCuerpo');
+
+    const stats = (typeof FIC_STATS !== 'undefined') ? FIC_STATS : {};
+    console.log('Stats cargados:', stats);
+
+    let tituloTexto = '';
+    let contenido   = '';
+
+    switch (tipo) {
+
+        case 'fondos':
+            tituloTexto = '📊 Total de Fondos';
+            contenido = `
+                <div class="panel-stat">
+                    <div class="panel-stat__icono">📊</div>
+                    <div class="panel-stat__info">
+                        <div class="panel-stat__valor">${stats.totalFondos}</div>
+                        <div class="panel-stat__label">Fondos registrados</div>
+                    </div>
+                </div>
+                <hr class="panel-divider">
+                <p class="panel-titulo-seccion">¿Qué significa?</p>
+                <p style="font-size:0.9rem;color:#444;line-height:1.6">
+                    Este número representa el total de Fondos de Inversión 
+                    Colectiva (FIC) registrados en la plataforma, obtenidos 
+                    directamente desde datos.gov.co.
+                </p>
+                <hr class="panel-divider">
+                <p class="panel-titulo-seccion">Fuente</p>
+                <p style="font-size:0.85rem;color:#666">
+                    Superintendencia Financiera de Colombia · datos.gov.co
+                </p>
+            `;
+            break;
+
+        case 'mejor':
+            const colorMejor = stats.mejorRentabilidad >= 0
+                ? '#065f46' : '#991b1b';
+            tituloTexto = '🏆 Mejor Rentabilidad';
+            contenido = `
+                <div class="panel-stat">
+                    <div class="panel-stat__icono">🏆</div>
+                    <div class="panel-stat__info">
+                        <div class="panel-stat__valor"
+                             style="color:${colorMejor}">
+                            ${stats.mejorRentabilidad}%
+                        </div>
+                        <div class="panel-stat__label">Rentabilidad anual</div>
+                    </div>
+                </div>
+                <div class="panel-stat">
+                    <div class="panel-stat__icono">🏦</div>
+                    <div class="panel-stat__info">
+                        <div class="panel-stat__valor"
+                             style="font-size:1rem">
+                            ${stats.nombreMejorFondo}
+                        </div>
+                        <div class="panel-stat__label">Nombre del fondo</div>
+                    </div>
+                </div>
+                <hr class="panel-divider">
+                <p class="panel-titulo-seccion">¿Qué significa?</p>
+                <p style="font-size:0.9rem;color:#444;line-height:1.6">
+                    La rentabilidad anual indica el porcentaje de ganancia 
+                    o pérdida que generó el fondo en los últimos 12 meses 
+                    sobre el capital invertido.
+                </p>
+            `;
+            break;
+
+        case 'promedio':
+            const colorProm = stats.promedioRentabilidad >= 0
+                ? '#065f46' : '#991b1b';
+            tituloTexto = '📈 Rentabilidad Promedio';
+            contenido = `
+                <div class="panel-stat">
+                    <div class="panel-stat__icono">📈</div>
+                    <div class="panel-stat__info">
+                        <div class="panel-stat__valor"
+                             style="color:${colorProm}">
+                            ${stats.promedioRentabilidad}%
+                        </div>
+                        <div class="panel-stat__label">Promedio anual</div>
+                    </div>
+                </div>
+                <hr class="panel-divider">
+                <p class="panel-titulo-seccion">¿Qué significa?</p>
+                <p style="font-size:0.9rem;color:#444;line-height:1.6">
+                    Es el promedio de la rentabilidad anual de todos los fondos 
+                    registrados. Un valor positivo indica que en promedio los 
+                    fondos están generando ganancias para los inversionistas.
+                </p>
+                <hr class="panel-divider">
+                <p class="panel-titulo-seccion">Interpretación</p>
+                <div class="panel-stat" style="background:${
+                    stats.promedioRentabilidad >= 0
+                        ? '#d1fae5' : '#fee2e2'}">
+                    <div class="panel-stat__icono">
+                        ${stats.promedioRentabilidad >= 0 ? '✅' : '⚠️'}
+                    </div>
+                    <div class="panel-stat__info">
+                        <div class="panel-stat__valor" style="font-size:0.95rem">
+                            ${stats.promedioRentabilidad >= 0
+                                ? 'Mercado con tendencia positiva'
+                                : 'Mercado con tendencia negativa'}
+                        </div>
+                    </div>
+                </div>
+            `;
+            break;
+
+        case 'inversionistas':
+            tituloTexto = '👥 Total Inversionistas';
+            contenido = `
+                <div class="panel-stat">
+                    <div class="panel-stat__icono">👥</div>
+                    <div class="panel-stat__info">
+                        <div class="panel-stat__valor">
+                            ${stats.totalInversionistas.toLocaleString()}
+                        </div>
+                        <div class="panel-stat__label">
+                            Inversionistas activos
+                        </div>
+                    </div>
+                </div>
+                <hr class="panel-divider">
+                <p class="panel-titulo-seccion">¿Qué significa?</p>
+                <p style="font-size:0.9rem;color:#444;line-height:1.6">
+                    Representa el número total de inversionistas 
+                    participando en todos los fondos registrados en 
+                    la plataforma actualmente.
+                </p>
+                <hr class="panel-divider">
+                <p class="panel-titulo-seccion">Promedio por fondo</p>
+                <div class="panel-stat">
+                    <div class="panel-stat__icono">🧮</div>
+                    <div class="panel-stat__info">
+                        <div class="panel-stat__valor">
+                            ${stats.totalFondos > 0
+                                ? Math.round(stats.totalInversionistas
+                                    / stats.totalFondos)
+                                : 0}
+                        </div>
+                        <div class="panel-stat__label">
+                            Inversionistas por fondo
+                        </div>
+                    </div>
+                </div>
+            `;
+            break;
+    }
+
+    titulo.textContent = tituloTexto;
+    cuerpo.innerHTML   = contenido;
+    panel.classList.add('open');
+
+    // Cierra con Escape
+    document.addEventListener('keydown', cerrarConEscape);
+}
+
+function cerrarPanel() {
+    document.getElementById('kpiPanel').classList.remove('open');
+    document.removeEventListener('keydown', cerrarConEscape);
+}
+
+function cerrarConEscape(e) {
+    if (e.key === 'Escape') cerrarPanel();
+}
