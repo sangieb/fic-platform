@@ -365,3 +365,64 @@ function cerrarPanel() {
 function cerrarConEscape(e) {
     if (e.key === 'Escape') cerrarPanel();
 }
+
+/* ── Sincronizar datos ── */
+function sincronizarDatos() {
+    const btn = document.querySelector('.btn-export--sync');
+
+    // Cambia el botón a estado cargando
+    btn.textContent = '⏳ Sincronizando...';
+    btn.classList.add('cargando');
+
+    mostrarToast('⏳ Sincronizando datos desde datos.gov.co...', 'loading', 0);
+
+    fetch('http://localhost:8080/api/fic/sync?limit=100', {
+        method: 'GET',
+    })
+    .then(response => response.text())
+    .then(resultado => {
+        // Restaura el botón
+        btn.textContent = '🔄 Sync';
+        btn.classList.remove('cargando');
+
+        mostrarToast('✅ ' + resultado, 'success', 4000);
+
+        // Recarga la página después de 1.5 segundos
+        setTimeout(() => {
+            window.location.reload();
+        }, 1500);
+    })
+    .catch(error => {
+        btn.textContent = '🔄 Sync';
+        btn.classList.remove('cargando');
+        mostrarToast('❌ Error al sincronizar', 'error', 4000);
+        console.error('Error sync:', error);
+    });
+}
+
+/* ── Toast de notificación ── */
+function mostrarToast(mensaje, tipo, duracion) {
+    // Elimina toast anterior si existe
+    const anterior = document.querySelector('.fic-toast');
+    if (anterior) anterior.remove();
+
+    const toast = document.createElement('div');
+    toast.className = `fic-toast fic-toast--${tipo}`;
+    toast.textContent = mensaje;
+    document.body.appendChild(toast);
+
+    // Anima entrada
+    requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+            toast.classList.add('visible');
+        });
+    });
+
+    // Auto cierra si duracion > 0
+    if (duracion > 0) {
+        setTimeout(() => {
+            toast.classList.remove('visible');
+            setTimeout(() => toast.remove(), 300);
+        }, duracion);
+    }
+}

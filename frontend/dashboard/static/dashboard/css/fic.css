@@ -589,3 +589,147 @@ body {
     color: var(--color-text-muted);
     margin-bottom: 0.75rem;
 }
+
+/* ── Botón sincronizar ── */
+.btn-export--sync {
+    background: #6366f1;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.btn-export--sync:hover {
+    background: #4f46e5;
+}
+
+.btn-export--sync.cargando {
+    opacity: 0.7;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* ── Toast de notificación ── */
+.fic-toast {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    padding: 0.85rem 1.25rem;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #ffffff;
+    box-shadow: var(--shadow-md);
+    z-index: 3000;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+    max-width: 320px;
+}
+
+.fic-toast.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.fic-toast--success { background: #059669; }
+.fic-toast--error   { background: #dc2626; }
+.fic-toast--loading { background: #6366f1; }
+
+/* ── Footer ── */
+.fic-footer {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    color: rgba(255,255,255,0.85);
+    margin-top: 3rem;
+}
+
+.fic-footer__contenido {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2.5rem 2rem;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 2rem;
+}
+
+.fic-footer__bloque {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.fic-footer__logo {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 0.25rem;
+}
+
+.fic-footer__desc {
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.6;
+    margin: 0;
+}
+
+.fic-footer__titulo {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 0.25rem;
+}
+
+.fic-footer__link {
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.75);
+    text-decoration: none;
+    transition: color 0.2s;
+    display: inline-block;
+}
+
+.fic-footer__link:hover {
+    color: #ffffff;
+}
+
+.fic-footer__tag {
+    display: inline-block;
+    background: rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.8);
+    padding: 0.2rem 0.6rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    width: fit-content;
+}
+
+.fic-footer__barra {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 1rem 2rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.45);
+}
+
+/* Responsive footer */
+@media (max-width: 768px) {
+    .fic-footer__contenido {
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .fic-footer__contenido {
+        grid-template-columns: 1fr;
+    }
+
+    .fic-footer__barra {
+        flex-direction: column;
+        gap: 0.5rem;
+        text-align: center;
+    }
+}
