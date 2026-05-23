@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{{ t.page_title }}{% endblock %}</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'dashboard/css/fic.css' %}">
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+<nav class="fic-navbar">
+  <a href="/?lang={{ lang }}" class="fic-navbar__brand">
+    📊 FIC Colombia
+  </a>
+  <div class="fic-navbar__actions">
+
+    <!-- Idiomas -->
+    <a href="?lang=es&nombre={{ nombre }}"
+       class="btn-lang {% if lang == 'es' %}active{% endif %}">🇨🇴 ES</a>
+    <a href="?lang=en&nombre={{ nombre }}"
+       class="btn-lang {% if lang == 'en' %}active{% endif %}">🇺🇸 EN</a>
+    <a href="?lang=fr&nombre={{ nombre }}"
+       class="btn-lang {% if lang == 'fr' %}active{% endif %}">🇫🇷 FR</a>
+
+    <!-- Exportar -->
+    <a href="http://localhost:8080/api/reportes/pdf"
+       class="btn-export btn-export--pdf" target="_blank">
+      📄 {{ t.nav_exportar_pdf }}
+    </a>
+    <a href="http://localhost:8080/api/reportes/excel"
+       class="btn-export btn-export--excel" target="_blank">
+      📊 {{ t.nav_exportar_excel }}
+    </a>
+  </div>
+</nav>
+
+<main class="fic-main">
+  {% block content %}{% endblock %}
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{% static 'dashboard/js/fic.js' %}"></script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

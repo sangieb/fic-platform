@@ -1,5 +1,6 @@
 package com.fic.backend.config;
 
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.LocaleResolver;
@@ -15,7 +16,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Bean
     public LocaleResolver localeResolver() {
         SessionLocaleResolver resolver = new SessionLocaleResolver();
-        resolver.setDefaultLocale(new Locale("es", "CO"));
+        resolver.setDefaultLocale(new Locale("es"));
         return resolver;
     }
 
@@ -29,5 +30,15 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(localeChangeInterceptor());
+    }
+    
+    @Bean
+    public MessageSource messageSource() {
+        org.springframework.context.support.ResourceBundleMessageSource source =
+            new org.springframework.context.support.ResourceBundleMessageSource();
+        source.setBasename("messages");
+        source.setDefaultEncoding("UTF-8");
+        source.setUseCodeAsDefaultMessage(true); // ← evita el error si falta una clave
+        return source;
     }
 }

@@ -1,0 +1,358 @@
+/* ═══════════════════════════════════════
+   FIC Colombia — Hoja de estilos principal
+   ═══════════════════════════════════════ */
+
+/* ── Variables de color ── */
+:root {
+    --color-primary:    #0d6efd;
+    --color-success:    #198754;
+    --color-danger:     #dc3545;
+    --color-dark:       #212529;
+    --color-light-bg:   #f8f9fa;
+    --color-card-bg:    #ffffff;
+    --color-border:     #dee2e6;
+    --color-text-muted: #6c757d;
+    --shadow-sm:        0 1px 3px rgba(0,0,0,0.08);
+    --shadow-md:        0 4px 12px rgba(0,0,0,0.10);
+    --radius:           10px;
+}
+
+/* ── Base ── */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--color-light-bg);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--color-dark);
+    min-height: 100vh;
+}
+
+/* ── Navbar ── */
+.fic-navbar {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    padding: 0.75rem 2rem;
+    box-shadow: var(--shadow-md);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.fic-navbar__brand {
+    color: #ffffff;
+    font-size: 1.4rem;
+    font-weight: 700;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.fic-navbar__brand:hover {
+    color: #e0e0e0;
+}
+
+.fic-navbar__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+/* ── Botones de idioma ── */
+.btn-lang {
+    padding: 0.3rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    border: 1.5px solid rgba(255,255,255,0.4);
+    color: #ffffff;
+    background: transparent;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.btn-lang:hover {
+    background: rgba(255,255,255,0.15);
+    color: #ffffff;
+    border-color: rgba(255,255,255,0.7);
+}
+
+.btn-lang.active {
+    background: #ffffff;
+    color: var(--color-dark);
+    border-color: #ffffff;
+}
+
+/* ── Botones de exportar ── */
+.btn-export {
+    padding: 0.3rem 0.9rem;
+    border-radius: 20px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border: none;
+}
+
+.btn-export:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.btn-export--pdf {
+    background: #dc3545;
+    color: #ffffff;
+}
+
+.btn-export--excel {
+    background: #198754;
+    color: #ffffff;
+}
+
+/* ── Contenedor principal ── */
+.fic-main {
+    padding: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* ── Header de página ── */
+.fic-header {
+    margin-bottom: 1.5rem;
+}
+
+.fic-header__title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+    color: var(--color-dark);
+}
+
+.fic-header__subtitle {
+    color: var(--color-text-muted);
+    font-size: 0.95rem;
+}
+
+/* ── Tarjeta genérica ── */
+.fic-card {
+    background: var(--color-card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--color-border);
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+}
+
+.fic-card__header {
+    padding: 0.85rem 1.25rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border-bottom: 1px solid var(--color-border);
+    background: #f1f3f5;
+}
+
+.fic-card__body {
+    padding: 1.25rem;
+}
+
+/* ── Buscador ── */
+.fic-search {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+}
+
+.fic-search__input {
+    flex: 1;
+    min-width: 220px;
+    padding: 0.55rem 1rem;
+    border: 1.5px solid var(--color-border);
+    border-radius: 8px;
+    font-size: 0.9rem;
+    transition: border-color 0.2s;
+    outline: none;
+}
+
+.fic-search__input:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(13,110,253,0.15);
+}
+
+.fic-search__btn {
+    padding: 0.55rem 1.25rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.fic-search__btn--primary {
+    background: var(--color-primary);
+    color: #ffffff;
+}
+
+.fic-search__btn--primary:hover {
+    background: #0b5ed7;
+}
+
+.fic-search__btn--secondary {
+    background: #e9ecef;
+    color: var(--color-dark);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+}
+
+.fic-search__btn--secondary:hover {
+    background: #dee2e6;
+    color: var(--color-dark);
+}
+
+/* ── Tabla ── */
+.fic-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+}
+
+.fic-table thead tr {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    color: #ffffff;
+}
+
+.fic-table thead th {
+    padding: 0.85rem 1rem;
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border: none;
+    white-space: nowrap;
+}
+
+.fic-table tbody tr {
+    border-bottom: 1px solid #f0f0f0;
+    transition: background 0.15s;
+}
+
+.fic-table tbody tr:hover {
+    background: #f0f4ff;
+}
+
+.fic-table tbody td {
+    padding: 0.75rem 1rem;
+    vertical-align: middle;
+}
+
+.fic-table__nombre {
+    font-weight: 600;
+    color: var(--color-dark);
+    max-width: 220px;
+}
+
+.fic-table__tipo {
+    color: var(--color-text-muted);
+    font-size: 0.78rem;
+}
+
+/* ── Badges de rentabilidad ── */
+.badge-rent {
+    display: inline-block;
+    padding: 0.25rem 0.6rem;
+    border-radius: 20px;
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+
+.badge-rent--pos {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.badge-rent--neg {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+/* ── Paginación ── */
+.fic-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.fic-pagination__btn {
+    padding: 0.4rem 1rem;
+    border-radius: 8px;
+    border: 1.5px solid var(--color-border);
+    background: #ffffff;
+    color: var(--color-dark);
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.fic-pagination__btn:hover {
+    background: var(--color-primary);
+    color: #ffffff;
+    border-color: var(--color-primary);
+}
+
+.fic-pagination__info {
+    color: var(--color-text-muted);
+    font-size: 0.875rem;
+    padding: 0.4rem 0.75rem;
+}
+
+/* ── Sin resultados ── */
+.fic-empty {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--color-text-muted);
+}
+
+.fic-empty__icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+/* ── Gráfica ── */
+.fic-chart-container {
+    position: relative;
+    height: 280px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+    .fic-main {
+        padding: 1rem;
+    }
+
+    .fic-navbar {
+        padding: 0.75rem 1rem;
+    }
+
+    .fic-header__title {
+        font-size: 1.4rem;
+    }
+
+    .fic-table {
+        font-size: 0.8rem;
+    }
+
+    .fic-table thead th,
+    .fic-table tbody td {
+        padding: 0.5rem 0.6rem;
+    }
+}

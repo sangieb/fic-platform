@@ -51,11 +51,7 @@ public class FicService {
                 return 0;
             }
 
-            // Muestra los campos reales de la API en consola
-            System.out.println("=== CAMPOS DE LA API ===");
-            resultados.get(0).forEach((k, v) ->
-                System.out.println(k + " = " + v));
-            System.out.println("========================");
+
 
             for (Map<String, Object> fila : resultados) {
                 FicData f = new FicData();

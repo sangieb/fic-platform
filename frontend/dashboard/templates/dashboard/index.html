@@ -1,0 +1,123 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block title %}{{ t.page_title }}{% endblock %}
+
+{% block content %}
+
+<div class="fic-header">
+  <h1 class="fic-header__title">{{ t.dashboard_titulo }}</h1>
+  <p class="fic-header__subtitle">{{ total_items }} {{ t.fondos_disponibles }}</p>
+</div>
+
+<form method="get" class="fic-search">
+  <input type="hidden" name="lang" value="{{ lang }}">
+  <input type="text" name="nombre" value="{{ nombre }}"
+         class="fic-search__input"
+         placeholder="{{ t.dashboard_buscador }}">
+  <button type="submit" class="fic-search__btn fic-search__btn--primary">
+    🔍 {{ t.dashboard_boton_buscar }}
+  </button>
+  <a href="/?lang={{ lang }}" class="fic-search__btn fic-search__btn--secondary">
+    ✕ {{ t.dashboard_boton_limpiar }}
+  </a>
+</form>
+
+{% if fondos %}
+<div class="fic-card">
+  <div class="fic-card__header">📈 {{ t.grafica_titulo }}</div>
+  <div class="fic-card__body">
+    <div class="fic-chart-container">
+        <canvas id="graficaFic"
+        data-labels='[{% for f in fondos|slice:":10" %}{% if not forloop.last %}"{{ f.nombreFondo|default:"Fondo"|truncatechars:22|escapejs }}",{% else %}"{{ f.nombreFondo|default:"Fondo"|truncatechars:22|escapejs }}"{% endif %}{% endfor %}]'
+        data-valores='[{% for f in fondos|slice:":10" %}{% if not forloop.last %}{{ f.rentabilidad|default:0 }},{% else %}{{ f.rentabilidad|default:0 }}{% endif %}{% endfor %}]'
+        data-label="{{ t.tabla_columna_anual }} (%)">
+        </canvas>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+<div class="fic-card">
+  <div class="fic-card__header">
+    📋 {{ t.tabla_titulo }}
+    <span class="text-muted fw-normal" style="font-size:0.85rem;">
+      — {{ t.paginacion_pagina }} {{ current_page|add:'1' }}/{{ total_pages }}
+    </span>
+  </div>
+  <div style="overflow-x: auto;">
+    <table class="fic-table">
+      <thead>
+        <tr>
+          <th>{{ t.tabla_columna_fondo }}</th>
+          <th>{{ t.tabla_columna_gestora }}</th>
+          <th>{{ t.tabla_columna_tipo }}</th>
+          <th>{{ t.tabla_columna_diaria }}</th>
+          <th>{{ t.tabla_columna_mensual }}</th>
+          <th>{{ t.tabla_columna_anual }}</th>
+          <th>{{ t.tabla_columna_inversionistas }}</th>
+          <th>{{ t.tabla_columna_periodo }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for fondo in fondos %}
+        <tr>
+          <td class="fic-table__nombre">{{ fondo.nombreFondo|default:"-" }}</td>
+          <td>{{ fondo.sociedadGestora|default:"-" }}</td>
+          <td class="fic-table__tipo">{{ fondo.tipoFondo|default:"-" }}</td>
+          <td>
+            {% if fondo.rentabilidadDiaria is not None %}
+              <span class="badge-rent {% if fondo.rentabilidadDiaria >= 0 %}badge-rent--pos{% else %}badge-rent--neg{% endif %}">
+                {{ fondo.rentabilidadDiaria|floatformat:2 }}%
+              </span>
+            {% else %}-{% endif %}
+          </td>
+          <td>
+            {% if fondo.rentabilidadMensual is not None %}
+              <span class="badge-rent {% if fondo.rentabilidadMensual >= 0 %}badge-rent--pos{% else %}badge-rent--neg{% endif %}">
+                {{ fondo.rentabilidadMensual|floatformat:2 }}%
+              </span>
+            {% else %}-{% endif %}
+          </td>
+          <td>
+            {% if fondo.rentabilidad is not None %}
+              <span class="badge-rent {% if fondo.rentabilidad >= 0 %}badge-rent--pos{% else %}badge-rent--neg{% endif %}">
+                {{ fondo.rentabilidad|floatformat:2 }}%
+              </span>
+            {% else %}-{% endif %}
+          </td>
+          <td>{{ fondo.numInversionistas|default:"-" }}</td>
+          <td>{{ fondo.periodo|default:"-"|slice:":10" }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="8">
+            <div class="fic-empty">
+              <div class="fic-empty__icon">🔍</div>
+              <p>{{ t.tabla_sin_resultados }}</p>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% if total_pages > 1 %}
+<div class="fic-pagination">
+  {% if current_page > 0 %}
+  <a href="?page={{ current_page|add:'-1' }}&lang={{ lang }}&nombre={{ nombre }}"
+     class="fic-pagination__btn">← {{ t.paginacion_anterior }}</a>
+  {% endif %}
+  <span class="fic-pagination__info">
+    {{ t.paginacion_pagina }} {{ current_page|add:'1' }} / {{ total_pages }}
+  </span>
+  {% if current_page < total_pages|add:'-1' %}
+  <a href="?page={{ current_page|add:'1' }}&lang={{ lang }}&nombre={{ nombre }}"
+     class="fic-pagination__btn">{{ t.paginacion_siguiente }} →</a>
+  {% endif %}
+</div>
+{% endif %}
+
+{% endblock %}
