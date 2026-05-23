@@ -1,0 +1,21 @@
+# Java / Maven
+backend/target/
+backend/.classpath
+backend/.project
+backend/.settings/
+backend/*.class
+
+# Python / Django
+frontend/__pycache__/
+frontend/*.pyc
+frontend/db.sqlite3
+frontend/.env
+
+# IDEs
+.idea/
+*.iml
+.vscode/
+
+# Sistema
+.DS_Store
+Thumbs.db
