@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports
+              http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+              name="fic_reporte"
+              pageWidth="842" pageHeight="595"
+              orientation="Landscape"
+              columnWidth="782" leftMargin="30" rightMargin="30"
+              topMargin="20" bottomMargin="20">
+
+    <!-- Parámetros -->
+    <parameter name="TITULO"   class="java.lang.String"/>
+    <parameter name="GENERADO" class="java.lang.String"/>
+    <parameter name="TOTAL"    class="java.lang.Integer"/>
+
+    <!-- Campos -->
+    <field name="nombreFondo"         class="java.lang.String"/>
+    <field name="sociedadGestora"     class="java.lang.String"/>
+    <field name="rentabilidadDiaria"  class="java.lang.Double"/>
+    <field name="rentabilidadMensual" class="java.lang.Double"/>
+    <field name="rentabilidad"        class="java.lang.Double"/>
+    <field name="numInversionistas"   class="java.lang.Integer"/>
+    <field name="periodo"             class="java.lang.String"/>
+
+    <!-- Variable para alternar colores de fila -->
+    <variable name="FILA_NUM" class="java.lang.Integer"
+              calculation="Count">
+        <variableExpression><![CDATA[1]]></variableExpression>
+    </variable>
+
+    <!-- TÍTULO -->
+    <title>
+        <band height="60">
+            <rectangle>
+                <reportElement x="0" y="0" width="782" height="60"
+                               backcolor="#1a1a2e"/>
+                <graphicElement><pen lineWidth="0"/></graphicElement>
+            </rectangle>
+            <textField>
+                <reportElement x="10" y="8" width="762" height="28"
+                               forecolor="#FFFFFF"/>
+                <textElement verticalAlignment="Middle">
+                    <font size="16" isBold="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$P{TITULO}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="10" y="40" width="762" height="14"
+                               forecolor="#AAAACC"/>
+                <textElement><font size="8"/></textElement>
+                <textFieldExpression>
+                    <![CDATA[$P{GENERADO} + " · " + $P{TOTAL} + " registros · datos.gov.co"]]>
+                </textFieldExpression>
+            </textField>
+        </band>
+    </title>
+
+    <!-- ENCABEZADOS -->
+    <columnHeader>
+        <band height="24">
+            <rectangle>
+                <reportElement x="0" y="0" width="782" height="24"
+                               backcolor="#16213e"/>
+                <graphicElement><pen lineWidth="0"/></graphicElement>
+            </rectangle>
+            <staticText>
+                <reportElement x="0"   y="0" width="210" height="24" forecolor="#FFFFFF"/>
+                <textElement verticalAlignment="Middle">
+                    <font size="8" isBold="true"/>
+                </textElement>
+                <text><![CDATA[NOMBRE DEL FONDO]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="210" y="0" width="160" height="24" forecolor="#FFFFFF"/>
+                <textElement verticalAlignment="Middle">
+                    <font size="8" isBold="true"/>
+                </textElement>
+                <text><![CDATA[GESTORA]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="370" y="0" width="90" height="24" forecolor="#FFFFFF"/>
+                <textElement verticalAlignment="Middle" textAlignment="Center">
+                    <font size="8" isBold="true"/>
+                </textElement>
+                <text><![CDATA[DIARIA %]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="460" y="0" width="90" height="24" forecolor="#FFFFFF"/>
+                <textElement verticalAlignment="Middle" textAlignment="Center">
+                    <font size="8" isBold="true"/>
+                </textElement>
+                <text><![CDATA[MENSUAL %]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="550" y="0" width="90" height="24" forecolor="#FFFFFF"/>
+                <textElement verticalAlignment="Middle" textAlignment="Center">
+                    <font size="8" isBold="true"/>
+                </textElement>
+                <text><![CDATA[ANUAL %]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="640" y="0" width="80" height="24" forecolor="#FFFFFF"/>
+                <textElement verticalAlignment="Middle" textAlignment="Center">
+                    <font size="8" isBold="true"/>
+                </textElement>
+                <text><![CDATA[INVERSION.]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="720" y="0" width="62" height="24" forecolor="#FFFFFF"/>
+                <textElement verticalAlignment="Middle" textAlignment="Center">
+                    <font size="8" isBold="true"/>
+                </textElement>
+                <text><![CDATA[PERÍODO]]></text>
+            </staticText>
+        </band>
+    </columnHeader>
+
+    <!-- DETALLE -->
+    <detail>
+        <band height="18" splitType="Stretch">
+
+            <!-- Fondo alternado usando expresión condicional -->
+            <rectangle>
+                <reportElement x="0" y="0" width="782" height="18"
+                               backcolor="#F0F4FF">
+                    <printWhenExpression>
+                        <![CDATA[$V{FILA_NUM} % 2 == 0]]>
+                    </printWhenExpression>
+                </reportElement>
+                <graphicElement><pen lineWidth="0"/></graphicElement>
+            </rectangle>
+
+            <textField isBlankWhenNull="true">
+                <reportElement x="0" y="1" width="208" height="16"/>
+                <textElement verticalAlignment="Middle">
+                    <font size="7"/>
+                </textElement>
+                <textFieldExpression>
+                    <![CDATA[$F{nombreFondo} != null
+                        ? ($F{nombreFondo}.length() > 34
+                            ? $F{nombreFondo}.substring(0,34) + "..."
+                            : $F{nombreFondo})
+                        : "-"]]>
+                </textFieldExpression>
+            </textField>
+
+            <textField isBlankWhenNull="true">
+                <reportElement x="210" y="1" width="158" height="16"/>
+                <textElement verticalAlignment="Middle">
+                    <font size="7"/>
+                </textElement>
+                <textFieldExpression>
+                    <![CDATA[$F{sociedadGestora} != null
+                        ? ($F{sociedadGestora}.length() > 24
+                            ? $F{sociedadGestora}.substring(0,24) + "..."
+                            : $F{sociedadGestora})
+                        : "-"]]>
+                </textFieldExpression>
+            </textField>
+
+            <textField isBlankWhenNull="true">
+                <reportElement x="370" y="1" width="88" height="16"
+                               forecolor="#065f46"/>
+                <textElement verticalAlignment="Middle" textAlignment="Center">
+                    <font size="7" isBold="true"/>
+                </textElement>
+                <textFieldExpression>
+                    <![CDATA[$F{rentabilidadDiaria} != null
+                        ? String.format("%.2f%%", $F{rentabilidadDiaria})
+                        : "-"]]>
+                </textFieldExpression>
+            </textField>
+
+            <textField isBlankWhenNull="true">
+                <reportElement x="460" y="1" width="88" height="16"
+                               forecolor="#065f46"/>
+                <textElement verticalAlignment="Middle" textAlignment="Center">
+                    <font size="7" isBold="true"/>
+                </textElement>
+                <textFieldExpression>
+                    <![CDATA[$F{rentabilidadMensual} != null
+                        ? String.format("%.2f%%", $F{rentabilidadMensual})
+                        : "-"]]>
+                </textFieldExpression>
+            </textField>
+
+            <textField isBlankWhenNull="true">
+                <reportElement x="550" y="1" width="88" height="16"
+                               forecolor="#1d4ed8"/>
+                <textElement verticalAlignment="Middle" textAlignment="Center">
+                    <font size="7" isBold="true"/>
+                </textElement>
+                <textFieldExpression>
+                    <![CDATA[$F{rentabilidad} != null
+                        ? String.format("%.2f%%", $F{rentabilidad})
+                        : "-"]]>
+                </textFieldExpression>
+            </textField>
+
+            <textField isBlankWhenNull="true">
+                <reportElement x="640" y="1" width="78" height="16"/>
+                <textElement verticalAlignment="Middle" textAlignment="Center">
+                    <font size="7"/>
+                </textElement>
+                <textFieldExpression>
+                    <![CDATA[$F{numInversionistas} != null
+                        ? $F{numInversionistas}.toString() : "-"]]>
+                </textFieldExpression>
+            </textField>
+
+            <textField isBlankWhenNull="true">
+                <reportElement x="720" y="1" width="60" height="16"/>
+                <textElement verticalAlignment="Middle" textAlignment="Center">
+                    <font size="7"/>
+                </textElement>
+                <textFieldExpression>
+                    <![CDATA[$F{periodo} != null && $F{periodo}.length() >= 10
+                        ? $F{periodo}.substring(0,10) : "-"]]>
+                </textFieldExpression>
+            </textField>
+
+        </band>
+    </detail>
+
+    <!-- PIE DE PÁGINA -->
+    <pageFooter>
+        <band height="18">
+            <line>
+                <reportElement x="0" y="0" width="782" height="1"/>
+            </line>
+            <staticText>
+                <reportElement x="0" y="4" width="500" height="12"
+                               forecolor="#999999"/>
+                <textElement><font size="7"/></textElement>
+                <text><![CDATA[FIC Colombia · Plataforma universitaria · datos.gov.co · Superfinanciera]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="682" y="4" width="100" height="12"
+                               forecolor="#999999"/>
+                <textElement textAlignment="Right"><font size="7"/></textElement>
+                <textFieldExpression>
+                    <![CDATA["Página " + $V{PAGE_NUMBER}]]>
+                </textFieldExpression>
+            </textField>
+        </band>
+    </pageFooter>
+
+</jasperReport>
