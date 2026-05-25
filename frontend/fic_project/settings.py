@@ -124,7 +124,7 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # URL del backend Spring Boot
-BACKEND_URL = 'http://localhost:8080'
+BACKEND_URL = 'https://localhost:8443'
 
 # Archivos estáticos
 STATICFILES_DIRS = [

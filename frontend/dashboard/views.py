@@ -1,6 +1,10 @@
 import requests
+import urllib3
 from django.shortcuts import render
 from django.conf import settings
+
+# Suprime advertencias de certificado autofirmado
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 TRADUCCIONES = {
     'es': {
@@ -113,7 +117,8 @@ def index(request):
         resp = requests.get(
             f"{settings.BACKEND_URL}/api/fic",
             params=params,
-            timeout=10
+            timeout=10,
+            verify=False
         )
         data        = resp.json()
         fondos      = data.get('content', [])
@@ -129,17 +134,18 @@ def index(request):
     try:
         resp_stats = requests.get(
             f"{settings.BACKEND_URL}/api/fic/estadisticas",
-            timeout=10
+            timeout=10,
+            verify=False
         )
         stats = resp_stats.json()
     except Exception as e:
         print(f"Error stats: {e}")
         stats = {
-            'totalFondos': 0,
-            'mejorRentabilidad': 0,
+            'totalFondos':          0,
+            'mejorRentabilidad':    0,
             'promedioRentabilidad': 0,
-            'totalInversionistas': 0,
-            'nombreMejorFondo': '-'
+            'totalInversionistas':  0,
+            'nombreMejorFondo':     '-'
         }
 
     t = TRADUCCIONES.get(lang, TRADUCCIONES['es'])

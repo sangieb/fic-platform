@@ -373,7 +373,7 @@ function sincronizarDatos() {
 
     mostrarToast('⏳ Sincronizando datos desde datos.gov.co...', 'loading', 0);
 
-    fetch('http://localhost:8080/api/fic/sync?limit=100', {
+    fetch('https://localhost:8443/api/fic/sync?limit=100', {
         method: 'GET',
     })
     .then(response => response.text())
