@@ -3,6 +3,8 @@
 <html lang="{{ lang }}">
 <head>
   <meta charset="UTF-8">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}{{ t.page_title }}{% endblock %}</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -10,6 +12,14 @@
   {% block extra_css %}{% endblock %}
 </head>
 <body>
+
+<!-- SPINNER DE CARGA -->
+<div id="ficSpinner" class="fic-spinner">
+  <div class="fic-spinner__caja">
+    <div class="fic-spinner__anillo"></div>
+    <div class="fic-spinner__texto">📊 Cargando datos...</div>
+  </div>
+</div>
 
 <nav class="fic-navbar">
   <a href="/?lang={{ lang }}" class="fic-navbar__brand">

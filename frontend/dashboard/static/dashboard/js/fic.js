@@ -1,8 +1,5 @@
-/* ═══════════════════════════════════════
-   FIC Colombia — JavaScript principal
-   ═══════════════════════════════════════ */
-
 document.addEventListener('DOMContentLoaded', function () {
+    ocultarSpinner();
     inicializarGrafica();
     inicializarTabla();
     inicializarBusquedaTiempoReal();
@@ -389,6 +386,7 @@ function sincronizarDatos() {
 
         // Recarga la página después de 1.5 segundos
         setTimeout(() => {
+            mostrarSpinner('🔄 Actualizando datos...');
             window.location.reload();
         }, 1500);
     })
@@ -425,4 +423,20 @@ function mostrarToast(mensaje, tipo, duracion) {
             setTimeout(() => toast.remove(), 300);
         }, duracion);
     }
+}
+
+/* ── Spinner ── */
+function ocultarSpinner() {
+    const spinner = document.getElementById('ficSpinner');
+    if (!spinner) return;
+    spinner.classList.add('oculto');
+    setTimeout(() => spinner.remove(), 300);
+}
+
+function mostrarSpinner(texto) {
+    const spinner = document.getElementById('ficSpinner');
+    if (!spinner) return;
+    const txt = spinner.querySelector('.fic-spinner__texto');
+    if (txt && texto) txt.textContent = texto;
+    spinner.classList.remove('oculto');
 }
