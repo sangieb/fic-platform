@@ -111,6 +111,15 @@ public class FicController {
         auditService.registrar("FicData", "STATS", "READ",
             "localhost", "Consulta de estadisticas");
 
+        auditService.registrar(
+        	    "FicData",
+        	    "ESTADISTICAS",
+        	    "READ",
+        	    "localhost",
+        	    "Consulta estadisticas - "
+        	        + totalFondos + " fondos"
+        	);
+        
         return ResponseEntity.ok(stats);
     }
 }

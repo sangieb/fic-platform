@@ -46,9 +46,17 @@ public class FicService {
      * @return Página de objetos {@link FicData} con metadatos de paginación
      */
     public Page<FicData> listar(Pageable pageable) {
-        auditService.registrar("FicData", "ALL", "READ",
-            "localhost", "Listado de fondos");
-        return ficRepo.findAll(pageable);
+        Page<FicData> resultado = ficRepo.findAll(pageable);
+        auditService.registrar(
+            "FicData",
+            "PAGE-" + pageable.getPageNumber(),
+            "READ",
+            "localhost",
+            "Listado pagina " + pageable.getPageNumber()
+                + " - " + resultado.getNumberOfElements()
+                + " registros"
+        );
+        return resultado;
     }
 
     /**
@@ -60,8 +68,17 @@ public class FicService {
      * @return Página de objetos {@link FicData} que coinciden con la búsqueda
      */
     public Page<FicData> buscarPorNombre(String nombre, Pageable pageable) {
-        return ficRepo.findByNombreFondoContainingIgnoreCase(
-            nombre, pageable);
+        Page<FicData> resultado = ficRepo
+            .findByNombreFondoContainingIgnoreCase(nombre, pageable);
+        auditService.registrar(
+            "FicData",
+            "BUSQUEDA",
+            "READ",
+            "localhost",
+            "Busqueda por nombre: '" + nombre + "' - "
+                + resultado.getTotalElements() + " resultados"
+        );
+        return resultado;
     }
 
     /**
@@ -129,7 +146,16 @@ public class FicService {
 
                 f.setFuente("datos.gov.co");
                 f.setCreatedAt(LocalDateTime.now());
-                ficRepo.save(f);
+                FicData guardado = ficRepo.save(f);
+
+                // Auditoría con PK real de cada registro
+                auditService.registrar(
+                    "FicData",
+                    String.valueOf(guardado.getId()),
+                    "CREATE",
+                    "sistema",
+                    "Fondo creado: " + guardado.getNombreFondo()
+                );
             }
 
             auditService.registrar(
